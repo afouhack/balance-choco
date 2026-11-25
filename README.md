@@ -6,7 +6,7 @@ Outil de calcul pour la chocolaterie : on choisit une recette (ingrédients en %
 
 - **Recalculer après une erreur de pesée** : touche les kg d'un ingrédient, tape ce qui a vraiment été pesé, et toute la recette s'adapte (bouton « Annuler » pour revenir).
 - **Modifier la recette** : noms, %, type de produit (chocolat ou pâte à tartiner).
-- **Fiche de fabrication** (section repliable) : n° de lot proposé automatiquement (+1), derniers lots matières repris, DDM calculée (13 mois chocolat, 7 mois pâte à tartiner, modifiable dans Réglages), impression au format de la fiche &COCOA.
+- **Fiche de fabrication** (section repliable) : n° de lot proposé automatiquement (+1), derniers lots matières repris, DDM calculée (13 mois chocolat, 7 mois pâte à tartiner, modifiable dans Réglages), impression au format de la fiche Ecocoa.
 - Recettes de base intégrées : Lait 44 %, Noir 62 %, Noir orange 56 %.
 - Les données sont enregistrées dans le navigateur de chaque appareil. « Réglages et sauvegarde » permet d'exporter ou d'importer.
 
