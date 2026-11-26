@@ -262,7 +262,14 @@ const TYPES={choco:'Chocolat',pat:'Pâte à tartiner'};
 const BASE=[
   {id:'b-lait44',name:'Lait 44 %',type:'choco',final:'150',items:[['Cacao','15'],['Beurre de cacao','29'],['Sucre','36'],['Poudre de lait','19,6'],['Lécithine','0,4']]},
   {id:'b-noir62',name:'Noir 62 %',type:'choco',final:'150',items:[['Cacao','44'],['Beurre de cacao','18'],['Sucre','37,6'],['Lécithine','0,4']]},
-  {id:'b-noirorange56',name:'Noir orange 56 %',type:'choco',final:'150',items:[['Cacao','35'],['Beurre de cacao','21'],['Sucre','43'],['Lécithine','0,4'],['Orange','0,4'],['Vanille','0,3']]}
+  {id:'b-noirorange56',name:'Noir orange 56 %',type:'choco',final:'150',items:[['Cacao','35'],['Beurre de cacao','21'],['Sucre','43'],['Lécithine','0,4'],['Orange','0,4'],['Vanille','0,3']]},
+  {id:'b-noir55',name:'Noir 55 %',type:'choco',final:'150',items:[['Cacao','35'],['Beurre de cacao','20'],['Sucre','44,6'],['Lécithine','0,4']]},
+  {id:'b-noir70',name:'Noir 70 %',type:'choco',final:'150',items:[['Cacao','58'],['Beurre de cacao','12'],['Sucre','29,6'],['Lécithine','0,4']]},
+  {id:'b-noir85',name:'Noir 85 %',type:'choco',final:'75',items:[['Cacao','80'],['Beurre de cacao','5'],['Sucre','14,6'],['Lécithine','0,4']]},
+  {id:'b-lait58',name:'Lait 58 %',type:'choco',final:'150',items:[['Cacao','36'],['Beurre de cacao','22'],['Sucre','26'],['Poudre de lait','15,6'],['Lécithine','0,4']]},
+  {id:'b-blanc35',name:'Blanc 35 %',type:'choco',final:'150',items:[['Beurre de cacao','35'],['Sucre','38'],['Poudre de lait entier','26'],['Extrait de vanille','0,6'],['Lécithine','0,4']]},
+  {id:'b-patnoir',name:'Pâte à tartiner choco',type:'pat',final:'45',items:[['Sucre','49'],['Huile de tournesol','20'],['Pâte de noisette','19'],['Liqueur de cacao','11'],['Vanille','0,6'],['Lécithine','0,4']]},
+  {id:'b-patlait',name:'Pâte à tartiner lait',type:'pat',final:'45',items:[['Sucre','49'],['Huile de tournesol','24'],['Pâte de noisette','10'],['Cacao','8,5'],['Lait','7,5'],['Vanille','0,6'],['Lécithine','0,4']]}
 ];
 const norm=n=>String(n||'').toLowerCase().replace(/\s+/g,'');
 let state;
@@ -485,19 +492,25 @@ function buildPrint(){
     const kg=num(it.pct)/100*F;tot+=kg;
     return '<tr><td class="rt">'+esc(it.name)+'</td><td class="ct">'+fp(num(it.pct))+' %</td><td class="ct">'+fk(kg)+'</td><td class="ct">'+esc(b.lots[it.id]||'')+'</td></tr>';
   }).join('');
+  const pat=r.type==='pat',ddm='<td class="ct">'+esc(addMonths(b.date,months(r)))+'</td>';
   $('print').innerHTML=
-   '<div class="ph"><span></span><h3>FICHE DE FABRICATION</h3><b>'+esc(state.brand)+'</b></div>'+
+   '<div class="ph"><span></span><h3>FICHE DE FABRICATION'+(pat?'<br><small style="font-size:14pt">– PÂTE À TARTINER –</small>':'')+'</h3><b>'+esc(state.brand)+'</b></div>'+
    '<table><colgroup><col style="width:24%"><col style="width:34%"><col style="width:20%"><col style="width:22%"></colgroup>'+
    '<tr><td class="lb">Fiche fabrication :</td><td><b>'+esc(r.name)+'</b></td><td class="lb ct">N° lot produit fini :</td><td class="ct"><b>'+esc(b.lotPF)+'</b></td></tr>'+
+   (pat?
+   '<tr><td class="lb">Responsable :</td><td>'+esc(b.resp)+'</td><td class="lb ct">DDM :<br>Jour j + '+months(r)+' mois</td>'+ddm+'</tr>'+
+   '<tr class="gr"><td class="lb">Quantité à préparer :</td><td>'+fk(F)+' kg</td><td class="ct">Date :</td><td class="ct">'+fdate(b.date)+'</td></tr>'
+   :
    '<tr><td class="lb">Responsable :</td><td>'+esc(b.resp)+'</td><td class="lb ct">DATE</td><td class="ct">'+fdate(b.date)+'</td></tr>'+
-   '<tr class="gr"><td colspan="2" class="ct">Liqueur de cacao</td><td class="ct">DDM :<br>Jour j + '+months(r)+' mois</td><td class="ct">'+esc(addMonths(b.date,months(r)))+'</td></tr>'+
+   '<tr class="gr"><td colspan="2" class="ct">Liqueur de cacao</td><td class="ct">DDM :<br>Jour j + '+months(r)+' mois</td>'+ddm+'</tr>'+
    '<tr><td class="lb ct">Pesées :</td><td colspan="3" class="pes">'+esc(b.pesees)+'</td></tr>'+
    '<tr><td colspan="3" class="lb rt">Total liqueur (kg) :</td><td class="ct">'+esc(b.totalLiq)+'</td></tr>'+
    '<tr><td colspan="3" class="lb rt">Durée conchage :</td><td class="ct">'+esc(b.conchage)+'</td></tr>'+
-   '<tr class="gr"><td colspan="2" class="ct">'+t+'</td><td class="ct">Date :</td><td class="ct">'+fdate(b.dateChoc)+'</td></tr>'+
+   '<tr class="gr"><td colspan="2" class="ct">'+t+'</td><td class="ct">Date :</td><td class="ct">'+fdate(b.dateChoc)+'</td></tr>')+
    '<tr><th>Ingrédients</th><th>%</th><th>KG</th><th>N° de lot matières premières</th></tr>'+rows+
    '<tr><td colspan="3" class="lb rt">Total '+t.toLowerCase()+' (kg) :</td><td class="ct"><b>'+fk(tot)+' kg</b></td></tr>'+
-   '<tr><td colspan="3" class="lb rt">Durée affinage :</td><td class="ct">'+esc(b.affinage)+'</td></tr></table>';
+   '<tr><td colspan="3" class="lb rt">Durée affinage :</td><td class="ct">'+esc(b.affinage)+'</td></tr>'+
+   (pat?'<tr><td class="lb ct">Note :</td><td colspan="3" class="pes">'+esc(b.pesees)+'</td></tr>':'')+'</table>';
 }
 function fitPrint(){
   const el=$('print'),avail=273*96/25.4*0.97;
